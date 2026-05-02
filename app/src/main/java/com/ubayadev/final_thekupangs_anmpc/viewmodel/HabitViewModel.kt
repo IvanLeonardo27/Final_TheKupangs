@@ -7,7 +7,7 @@ import com.ubayadev.habbit_thekupangs.data.HabitRepository
 
 class HabitViewModel : ViewModel() {
 
- val habits = MutableLiveData<ArrayList<Habit>>()
+
 
     fun loadHabits() {
         habits.value = HabitRepository.getHabits()
