@@ -66,7 +66,7 @@ class AddHabitFragment : Fragment() {
                 goal = binding.etGoal.text.toString().toInt(),
                 progress = 0,
                 unit = binding.etUnit.text.toString(),
-                icon = 0,
+                icon = selectedIcon,
                 status = "In Progress"
             )
 
