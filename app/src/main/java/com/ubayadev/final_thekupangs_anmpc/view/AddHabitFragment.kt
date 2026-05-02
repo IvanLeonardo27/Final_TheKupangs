@@ -16,7 +16,7 @@ import kotlin.random.Random
 
 class AddHabitFragment : Fragment() {
 
-    private lateinit var binding: FragmentAddHabitBindin
+    private lateinit var binding: FragmentAddHabitBinding
     private val viewModel = HabitViewModel()
 
     override fun onCreateView(
