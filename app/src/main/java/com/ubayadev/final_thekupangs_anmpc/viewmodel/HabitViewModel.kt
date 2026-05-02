@@ -20,6 +20,6 @@ class HabitViewModel : ViewModel() {
 
     fun updateProgress(id: Int, value: Int) {
         HabitRepository.updateProgress(id, value)
-        loadHabits()
+        loadHabits(
     }
 }
