@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Habbit_TheKupangs_C"
+rootProject.name = "Final_TheKupangs_ANMPC"
 include(":app")
  

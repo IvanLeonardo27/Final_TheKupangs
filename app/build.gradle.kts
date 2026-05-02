@@ -1,14 +1,19 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
-    namespace = "com.ubayadev.habbit_thekupangs_c"
+    namespace = "com.ubayadev.habbit_thekupangs"
     compileSdk = 36
 
+    buildFeatures{
+        viewBinding = true
+    }
+
     defaultConfig {
-        applicationId = "com.ubayadev.habbit_thekupangs_c"
+        applicationId = "com.ubayadev.habbit_thekupangs"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
@@ -42,7 +47,12 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.navigation.fragment)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.kotlinStdlib)
+    implementation(libs.coroutinesCore)
+    implementation(libs.appcompat)
+    implementation(libs.androidx.swiperefreshlayout)
 }
