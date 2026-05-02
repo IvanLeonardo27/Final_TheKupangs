@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
 import com.ubayadev.final_thekupangs_anmpc.model.Habit
 import com.ubayadev.habbit_thekupangs.R
@@ -22,13 +24,38 @@ class AddHabitFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_habit, container, false)
+        binding = FragmentAddHabitBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentAddHabitBinding.bind(view)
+        val iconMap = mapOf(
+            "Reading" to R.drawable.baseline_library_books_24,
+            "Drinking Water" to R.drawable.baseline_water_drop_24,
+            "Exercise" to R.drawable.baseline_sports_gymnastics_24
+        )
+
+        val iconNames = iconMap.keys.toList()
+
+        val spinnerAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            iconNames
+        )
+
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerIcon.adapter = spinnerAdapter
+
+        var selectedIcon = iconMap.values.first()
+
+        binding.spinnerIcon.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                selectedIcon = iconMap.values.elementAt(position)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
 
         binding.btnSave.setOnClickListener {
 
@@ -45,6 +72,7 @@ class AddHabitFragment : Fragment() {
 
             viewModel.addHabit(habit)
 
+            val action = AddHabitFragmentDirections.actionDashboardFragment()
             findNavController().popBackStack()
         }
     }

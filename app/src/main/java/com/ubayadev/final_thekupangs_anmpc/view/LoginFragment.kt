@@ -32,7 +32,7 @@ class LoginFragment : Fragment() {
             val password = binding.etPassword.text.toString()
 
             if (viewModel.login(username, password)) {
-                findNavController().navigate(R.id.action_login_to_dashboard)
+                findNavController().navigate(R.id.action_dashboard)
             } else {
                 Toast.makeText(requireContext(), "Username atau Password salah", Toast.LENGTH_SHORT).show()
             }

@@ -26,7 +26,7 @@ class DashboardFragment : Fragment() {
         binding = FragmentDashboardBinding.bind(view)
 
         binding.fabAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_dashboard_to_addHabit)
+            findNavController().navigate(R.id.action_addHabit)
         }
     }
 }

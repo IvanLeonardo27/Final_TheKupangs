@@ -9,7 +9,7 @@
         android:label="Login">
 
         <action
-            android:id="@+id/action_login_to_dashboard"
+            android:id="@+id/action_dashboard"
             app:destination="@id/dashboardFragment" />
     </fragment>
 
@@ -19,7 +19,7 @@
         android:label="Dashboard">
 
         <action
-            android:id="@+id/action_dashboard_to_addHabit"
+            android:id="@+id/action_addHabit"
             app:destination="@id/addHabitFragment" />
     </fragment>
 
@@ -28,7 +28,7 @@
         android:name="com.ubayadev.habbit_thekupangs.view.AddHabitFragment"
         android:label="Add Habit" >
         <action
-            android:id="@+id/action_addHabitFragment_to_dashboardFragment"
+            android:id="@+id/action_dashboardFragment"
             app:destination="@id/dashboardFragment"
             app:popUpToInclusive="true" />
     </fragment>
