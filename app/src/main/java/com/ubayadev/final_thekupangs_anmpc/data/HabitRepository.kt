@@ -6,7 +6,7 @@ object HabitRepository {
 
     private val habitList = mutableListOf<Habit>()
 
-    fun getHabits(): List<Habit> = habitList
+    fun getHabits(): ArrayList<Habit> = habitList as ArrayList<Habit>
 
     fun addHabit(habit: Habit) {
         habitList.add(habit)

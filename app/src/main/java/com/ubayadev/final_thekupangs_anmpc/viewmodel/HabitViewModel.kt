@@ -1,6 +1,5 @@
 package com.ubayadev.habbit_thekupangs.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ubayadev.final_thekupangs_anmpc.model.Habit
@@ -8,11 +7,10 @@ import com.ubayadev.habbit_thekupangs.data.HabitRepository
 
 class HabitViewModel : ViewModel() {
 
-    private val _habits = MutableLiveData<List<Habit>>()
-    val habits: LiveData<List<Habit>> = _habits
+ val habits = MutableLiveData<ArrayList<Habit>>()
 
     fun loadHabits() {
-        _habits.value = HabitRepository.getHabits()
+        habits.value = HabitRepository.getHabits()
     }
 
     fun addHabit(habit: Habit) {
