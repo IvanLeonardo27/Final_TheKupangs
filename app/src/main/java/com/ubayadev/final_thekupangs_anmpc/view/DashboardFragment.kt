@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubayadev.final_thekupangs_anmpc.adapter.HabitAdapter
-
+import com.ubayadev.final_thekupangs_anmpc.viewmodel.HabitViewModel
 import com.ubayadev.habbit_thekupangs.R
 import com.ubayadev.habbit_thekupangs.databinding.FragmentDashboardBinding
-import com.ubayadev.habbit_thekupangs.viewmodel.HabitViewModel
-
 class DashboardFragment : Fragment() {
     private lateinit var binding: FragmentDashboardBinding
     private lateinit var viewModel: HabitViewModel

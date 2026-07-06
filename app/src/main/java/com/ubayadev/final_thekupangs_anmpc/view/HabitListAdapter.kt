@@ -1,51 +1,71 @@
-package com.ubayadev.final_thekupangs_anmpc.adapter
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.ubayadev.final_thekupangs_anmpc.model.Habit
-import com.ubayadev.final_thekupangs_anmpc.util.HabitIcons
-import com.ubayadev.habbit_thekupangs.databinding.ItemHabitBinding
-import com.ubayadev.habbit_thekupangs.viewmodel.HabitViewModel
-
-class HabitAdapter(
-    private var habitList: List<Habit>,
-    private val viewModel: HabitViewModel
-) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
-    fun submitList(newList: List<Habit>) {
-        habitList = newList
-        notifyDataSetChanged()
-    }
-    inner class HabitViewHolder(val binding: ItemHabitBinding)
-        : RecyclerView.ViewHolder(binding.root)
-    override fun onCreateViewHolder(parent: ViewGroup, viewType:
-    Int): HabitViewHolder {
-        val binding = ItemHabitBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return HabitViewHolder(binding)
-    }
-    override fun onBindViewHolder(holder: HabitViewHolder, position:
-    Int) {
-        val habit = habitList[position]
-        with(holder.binding) {
-            tvHabitTitle.text = habit.name
-            tvHabitDescription.text = habit.description
-            tvStatus.text = habit.status
-            ivHabitIcon.setImageResource(habitList[position].icon)
-            progressBar.max = habit.goal
-            progressBar.progress = habit.progress
-            tvProgress.text = habit.progress.toString()
-            tvGoal.text = habit.goal.toString()
-            tvUnit.text = habit.unit
-            btnPlus.setOnClickListener {
-                viewModel.updateProgress(habit.id, 1)
-            }
-            btnMinus.setOnClickListener {
-                viewModel.updateProgress(habit.id, -1)
-            }
-        }
-    }
-    override fun getItemCount(): Int = habitList.size
-}
+//package com.ubayadev.habbit_thekupangs.view
+//
+//import android.view.LayoutInflater
+//import android.view.ViewGroup
+//import androidx.recyclerview.widget.RecyclerView
+//import com.ubayadev.final_thekupangs_anmpc.model.Habit
+//import com.ubayadev.habbit_thekupangs.databinding.ItemHabitBinding
+//
+//class HabitListAdapter(val habitList: ArrayList<Habit>):
+//    RecyclerView.Adapter<HabitListAdapter.HabitViewHolder>() {
+//    override fun onCreateViewHolder(
+//        parent: ViewGroup,
+//        viewType: Int
+//    ): HabitViewHolder {
+//        val binding= ItemHabitBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+//        return HabitViewHolder(binding)
+//    }
+//
+//    override fun onBindViewHolder(
+//        holder: HabitViewHolder,
+//        position: Int
+//    ) {
+//
+//        holder.binding.progressBar.max = habitList[position].goal
+//
+//        holder.binding.progressBar.progress = habitList[position].progress
+//
+//        if(habitList[position].progress< habitList[position].goal) {
+//            holder.binding.btnPlus.setOnClickListener {
+//                habitList[position].progress += 1
+//                notifyDataSetChanged()
+//            }
+//
+//            holder.binding.btnMinus.setOnClickListener {
+//                if(habitList[position].progress > 0){
+//                    habitList[position].progress -= 1
+//                    notifyDataSetChanged()
+//                }
+//
+//            }
+//        }
+//
+//        else{
+//            habitList[position].status = "Completed"
+//            holder.binding.btnPlus.isEnabled = false
+//            holder.binding.btnMinus.isEnabled = false
+//        }
+//
+//        holder.binding.ivHabitIcon.setImageResource(habitList[position].icon)
+//        holder.binding.tvHabitTitle.text =habitList[position].name
+//        holder.binding.tvHabitDescription.text = habitList[position].description
+//        holder.binding.tvStatus.text = habitList[position].status
+//        holder.binding.tvProgress.text = habitList[position].progress.toString()
+//        holder.binding.tvGoal.text = habitList[position].goal.toString()
+//        holder.binding.tvUnit.text = habitList[position].unit
+//    }
+//
+//    override fun getItemCount(): Int {
+//        return habitList.size
+//    }
+//
+//    fun updateHabitList(newHabitList: ArrayList<Habit>){
+//        habitList.clear()
+//        habitList.addAll(newHabitList)
+//        notifyDataSetChanged()
+//    }
+//
+//
+//    class HabitViewHolder(var binding : ItemHabitBinding)
+//        : RecyclerView.ViewHolder(binding.root)
+//}

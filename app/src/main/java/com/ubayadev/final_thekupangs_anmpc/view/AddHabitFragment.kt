@@ -11,8 +11,7 @@ import com.ubayadev.final_thekupangs_anmpc.model.Habit
 import com.ubayadev.final_thekupangs_anmpc.util.HabitIcons
 import com.ubayadev.habbit_thekupangs.R
 import com.ubayadev.habbit_thekupangs.databinding.FragmentAddHabitBinding
-import com.ubayadev.habbit_thekupangs.viewmodel.HabitViewModel
-
+import com.ubayadev.final_thekupangs_anmpc.viewmodel.HabitViewModel
 class AddHabitFragment : Fragment() {
     private lateinit var binding: FragmentAddHabitBinding
     private lateinit var viewModel: HabitViewModel
