@@ -1,78 +1,66 @@
-package com.ubayadev.habbit_thekupangs.view
-
+package com.ubayadev.final_thekupangs_anmpc.view
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.ubayadev.final_thekupangs_anmpc.model.Habit
+import com.ubayadev.final_thekupangs_anmpc.util.HabitIcons
 import com.ubayadev.habbit_thekupangs.R
 import com.ubayadev.habbit_thekupangs.databinding.FragmentAddHabitBinding
 import com.ubayadev.habbit_thekupangs.viewmodel.HabitViewModel
-import kotlin.random.Random
 
 class AddHabitFragment : Fragment() {
-
     private lateinit var binding: FragmentAddHabitBinding
-    private val viewModel = HabitViewModel()
-
+    private lateinit var viewModel: HabitViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        binding = FragmentAddHabitBinding.inflate(inflater, container, false)
-        return binding.root
+        return inflater.inflate(R.layout.fragment_add_habit,
+            container, false)
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState:
+    Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentAddHabitBinding.bind(view)
+        viewModel =
+            HabitViewModel(requireContext().applicationContext)
 
-        val iconMap = mapOf(
-            "Reading" to R.drawable.baseline_library_books_24,
-            "Drinking Water" to R.drawable.baseline_water_drop_24,
-            "Exercise" to R.drawable.baseline_sports_gymnastics_24
-        )
-
-        val iconNames = iconMap.keys.toList()
-
+        val iconLabels = HabitIcons.options.map { it.label }
         val spinnerAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
-            iconNames
+            iconLabels
         )
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerIcon.adapter = spinnerAdapter
-
-        var selectedIcon = iconMap.values.first()
-
-        binding.spinnerIcon.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                selectedIcon = iconMap.values.elementAt(position)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-
         binding.btnSave.setOnClickListener {
-
+            val name = binding.etName.text.toString()
+            val desc = binding.etDesc.text.toString()
+            val goalText = binding.etGoal.text.toString()
+            val unit = binding.etUnit.text.toString()
+            if (name.isBlank() || goalText.isBlank() ||
+                unit.isBlank()) {
+                Toast.makeText(requireContext(), "Semua field wajib diisi", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+            }
+            val selectedIcon =
+                binding.spinnerIcon.selectedItemPosition
             val habit = Habit(
-                id = Random.nextInt(),
-                name = binding.etName.text.toString(),
-                description = binding.etDesc.text.toString(),
-                goal = binding.etGoal.text.toString().toInt(),
+                name = name,
+                description = desc,
+                goal = goalText.toInt(),
                 progress = 0,
-                unit = binding.etUnit.text.toString(),
+                unit = unit,
                 icon = selectedIcon,
                 status = "In Progress"
             )
-
             viewModel.addHabit(habit)
-
-            val action = AddHabitFragmentDirections.actionDashboardFragment()
             findNavController().popBackStack()
         }
     }
