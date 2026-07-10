@@ -1,22 +1,32 @@
-package com.ubayadev.habbit_thekupangs.data
+package com.ubayadev.final_thekupangs_anmpc.data
 
+import androidx.lifecycle.LiveData
 import com.ubayadev.final_thekupangs_anmpc.model.Habit
+import com.ubayadev.final_thekupangs_anmpc.model.HabitDao
 
-object HabitRepository {
+class HabitRepository(private val habitDao: HabitDao) {
 
-    private val habitList = mutableListOf<Habit>()
+    fun getAllHabits(): LiveData<List<Habit>> = habitDao.getAllHabits()
 
-    fun getHabits(): List<Habit> = habitList
+    suspend fun getHabitById(id: Int): Habit? = habitDao.getHabitById(id)
 
-    fun addHabit(habit: Habit) {
-        habitList.add(habit)
+    suspend fun updateHabit(habit: Habit) {
+        habitDao.updateHabit(habit)
     }
 
-    fun updateProgress(id: Int, value: Int) {
-        habitList.find { it.id == id }?.let {
-            it.progress += value
-            if (it.progress < 0) it.progress = 0
-            if (it.progress > it.goal) it.progress = it.goal
-        }
+    suspend fun addHabit(habit: Habit) {
+        habitDao.insertHabit(habit)
+    }
+
+    suspend fun updateProgress(id: Int, value: Int) {
+        val habit = habitDao.getHabitById(id) ?: return
+
+        var newProgress = habit.progress + value
+        if (newProgress < 0) newProgress = 0
+        if (newProgress > habit.goal) newProgress = habit.goal
+
+        val newStatus = if (newProgress >= habit.goal) "Completed" else "In Progress"
+
+        habitDao.updateHabit(habit.copy(progress = newProgress, status = newStatus))
     }
 }

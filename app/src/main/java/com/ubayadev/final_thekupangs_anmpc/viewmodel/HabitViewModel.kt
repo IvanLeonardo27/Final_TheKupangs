@@ -1,27 +1,50 @@
-package com.ubayadev.habbit_thekupangs.viewmodel
+package com.ubayadev.final_thekupangs_anmpc.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ubayadev.final_thekupangs_anmpc.data.HabitRepository
 import com.ubayadev.final_thekupangs_anmpc.model.Habit
-import com.ubayadev.habbit_thekupangs.data.HabitRepository
+import com.ubayadev.final_thekupangs_anmpc.model.HabitDatabase
+import kotlinx.coroutines.launch
 
-class HabitViewModel : ViewModel() {
+class HabitViewModel(context: Context) : ViewModel() {
 
-    private val _habits = MutableLiveData<List<Habit>>()
-    val habits: LiveData<List<Habit>> = _habits
+    private val repository: HabitRepository
 
-    fun loadHabits() {
-        _habits.value = HabitRepository.getHabits()
+    val todoLD= MutableLiveData<Habit>()
+    val habits: LiveData<List<Habit>>
+
+    init {
+        val habitDao = HabitDatabase.getDatabase(context).habitDao()
+        repository = HabitRepository(habitDao)
+        habits = repository.getAllHabits()
     }
 
     fun addHabit(habit: Habit) {
-        HabitRepository.addHabit(habit)
-        loadHabits()
+        viewModelScope.launch {
+            repository.addHabit(habit)
+        }
+    }
+
+    fun getHabitById(id: Int) {
+        viewModelScope.launch {
+            todoLD.postValue(repository.getHabitById(id))
+
+        }
     }
 
     fun updateProgress(id: Int, value: Int) {
-        HabitRepository.updateProgress(id, value)
-        loadHabits()
+        viewModelScope.launch {
+            repository.updateProgress(id, value)
+        }
     }
-}
+
+    fun updateHabit(habit: Habit) {
+        viewModelScope.launch {
+            repository.updateHabit(habit)
+        }
+    }
+    }

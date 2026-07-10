@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.ubayadev.habbit_thekupangs.view.LoginFragment"
+        android:name="com.ubayadev.final_thekupangs_anmpc.view.LoginFragment"
         android:label="Login">
 
         <action
@@ -15,22 +15,33 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.ubayadev.habbit_thekupangs.view.DashboardFragment"
+        android:name="com.ubayadev.final_thekupangs_anmpc.view.DashboardFragment"
         android:label="Dashboard">
 
         <action
             android:id="@+id/action_dashboard_to_addHabit"
             app:destination="@id/addHabitFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_editHabitFragment"
+            app:destination="@id/editHabitFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/addHabitFragment"
-        android:name="com.ubayadev.habbit_thekupangs.view.AddHabitFragment"
+        android:name="com.ubayadev.final_thekupangs_anmpc.view.AddHabitFragment"
         android:label="Add Habit" >
         <action
             android:id="@+id/action_addHabitFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/editHabitFragment"
+        android:name="com.ubayadev.final_thekupangs_anmpc.view.EditHabitFragment"
+        android:label="EditHabitFragment" >
+        <argument
+            android:name="uuid"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

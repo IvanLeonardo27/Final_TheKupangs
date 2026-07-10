@@ -1,27 +1,28 @@
-package com.ubayadev.habbit_thekupangs.view
+package com.ubayadev.final_thekupangs_anmpc.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.ubayadev.final_thekupangs_anmpc.model.Habit
+import com.ubayadev.final_thekupangs_anmpc.util.HabitIcons
 import com.ubayadev.habbit_thekupangs.R
 import com.ubayadev.habbit_thekupangs.databinding.FragmentAddHabitBinding
-import com.ubayadev.habbit_thekupangs.viewmodel.HabitViewModel
-import kotlin.random.Random
+import com.ubayadev.final_thekupangs_anmpc.viewmodel.HabitViewModel
 
 class AddHabitFragment : Fragment() {
 
     private lateinit var binding: FragmentAddHabitBinding
-    private val viewModel = HabitViewModel()
+    private lateinit var viewModel: HabitViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_habit, container, false)
     }
 
@@ -29,22 +30,41 @@ class AddHabitFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentAddHabitBinding.bind(view)
+        viewModel = HabitViewModel(requireContext().applicationContext)
+
+        val iconLabels = HabitIcons.options.map { it.label }
+        val spinnerAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            iconLabels
+        )
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerIcon.adapter = spinnerAdapter
 
         binding.btnSave.setOnClickListener {
+            val name = binding.etName.text.toString()
+            val desc = binding.etDesc.text.toString()
+            val goalText = binding.etGoal.text.toString()
+            val unit = binding.etUnit.text.toString()
+
+            if (name.isBlank() || goalText.isBlank() || unit.isBlank()) {
+                Toast.makeText(requireContext(), "Semua field wajib diisi", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val selectedIcon = binding.spinnerIcon.selectedItemPosition
 
             val habit = Habit(
-                id = Random.nextInt(),
-                name = binding.etName.text.toString(),
-                description = binding.etDesc.text.toString(),
-                goal = binding.etGoal.text.toString().toInt(),
+                name = name,
+                description = desc,
+                goal = goalText.toInt(),
                 progress = 0,
-                unit = binding.etUnit.text.toString(),
-                icon = 0,
+                unit = unit,
+                icon = selectedIcon,
                 status = "In Progress"
             )
 
             viewModel.addHabit(habit)
-
             findNavController().popBackStack()
         }
     }

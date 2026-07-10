@@ -1,16 +1,27 @@
-package com.ubayadev.habbit_thekupangs.adapter
+package com.ubayadev.final_thekupangs_anmpc.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.ubayadev.final_thekupangs_anmpc.model.Habit
+import com.ubayadev.final_thekupangs_anmpc.util.HabitIcons
+import com.ubayadev.final_thekupangs_anmpc.view.AddHabitFragmentDirections
+import com.ubayadev.final_thekupangs_anmpc.view.DashboardFragmentDirections
+import com.ubayadev.final_thekupangs_anmpc.view.HabitListListener
 import com.ubayadev.habbit_thekupangs.databinding.ItemHabitBinding
-import com.ubayadev.habbit_thekupangs.viewmodel.HabitViewModel
+import com.ubayadev.final_thekupangs_anmpc.viewmodel.HabitViewModel
 
 class HabitAdapter(
-    private val habitList: List<Habit>,
+    private var habitList: List<Habit>,
     private val viewModel: HabitViewModel
-) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
+) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>(), HabitListListener {
+
+    fun submitList(newList: List<Habit>) {
+        habitList = newList
+        notifyDataSetChanged()
+    }
 
     inner class HabitViewHolder(val binding: ItemHabitBinding)
         : RecyclerView.ViewHolder(binding.root)
@@ -25,26 +36,49 @@ class HabitAdapter(
     }
 
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
-        val habit = habitList[position]
-
-        with(holder.binding) {
-            tvHabitTitle.text = habit.name
-            tvHabitDescription.text = habit.description
-
-            val status = if (habit.progress >= habit.goal) "Completed" else "In Progress"
-            tvStatus.text = status
-
-            progressBar.max = habit.goal
-            progressBar.progress = habit.progress
-
-            btnPlus.setOnClickListener {
-                viewModel.updateProgress(habit.id, 1)
-            }
-
-            btnMinus.setOnClickListener {
-                viewModel.updateProgress(habit.id, -1)
-            }
-        }
+        holder.binding.habit = habitList[position]
+        holder.binding.listener = this
+        holder.binding.icon = HabitIcons
+//        val habit = habitList[position]
+//
+//        with(holder.binding) {
+//            tvHabitTitle.text = habit.name
+//            tvHabitDescription.text = habit.description
+//            tvStatus.text = habit.status
+//
+//            tvHabitIcon.text = HabitIcons.emojiFor(habit.icon)
+//
+//            progressBar.max = habit.goal
+//            progressBar.progress = habit.progress
+//
+//            tvProgress.text = habit.progress.toString()
+//            tvGoal.text = habit.goal.toString()
+//            tvUnit.text = habit.unit
+//
+//            btnPlus.setOnClickListener {
+//                viewModel.updateProgress(habit.id, 1)
+//            }
+//
+//            btnMinus.setOnClickListener {
+//                viewModel.updateProgress(habit.id, -1)
+//            }
+//        }
     }
+
     override fun getItemCount(): Int = habitList.size
+    override fun onclick(v: View) {
+        val uuid =v.tag.toString().toInt()
+        val action = DashboardFragmentDirections.actionDashboardFragmentToEditHabitFragment(uuid)
+        Navigation.findNavController(v).navigate(action)
+    }
+
+    override fun onclickPlusButton(v: View) {
+        val uuid =v.tag.toString().toInt()
+        viewModel.updateProgress(uuid, 1)
+    }
+
+    override fun onclickMinusButton(v: View) {
+        val uuid =v.tag.toString().toInt()
+        viewModel.updateProgress(uuid, -1)
+    }
 }
